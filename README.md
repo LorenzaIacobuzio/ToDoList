@@ -23,6 +23,9 @@ A simple backend system for a to-do list app, with a RESTful API and a database.
 
 * OpenJDK version 17 or later (to run Ktor)
 * Docker 24 or later
+* Git
+* Intellij 2023
+* Postgres for Ubuntu
 
 ## Build and run
 
