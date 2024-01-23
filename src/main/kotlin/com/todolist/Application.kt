@@ -25,7 +25,7 @@ fun Application.module() {
     install(ContentNegotiation) {
         json()
     }
-    DatabaseFactory.init()
+    DatabaseFactory.init("ToDoListDB")
     routing {
         route("/v1") {
             getStatusRoute()
@@ -35,9 +35,9 @@ fun Application.module() {
 }
 
 object DatabaseFactory {
-    fun init() {
+    fun init(databaseName: String) {
         val database =  Database.connect(
-            url = "jdbc:postgresql://localhost:5432/ToDoListDB",
+            url = "jdbc:postgresql://localhost:5432/$databaseName",
             driver = "org.postgresql.Driver",
             user = "postgres",
             password = "postgres"
@@ -49,6 +49,7 @@ object DatabaseFactory {
     }
 
     private fun createActivitiesTable() {
+        SchemaUtils.drop(Activities)
         SchemaUtils.create(Activities)
     }
 

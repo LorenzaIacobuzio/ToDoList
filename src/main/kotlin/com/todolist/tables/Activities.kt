@@ -15,7 +15,7 @@ import java.time.LocalDateTime
 import java.time.ZonedDateTime
 import java.util.UUID
 
-object Activities: Table("Activities") {
+object Activities: UUIDTable("Activities", "id") {
     val userId: Column<String> = varchar("userId", 255)
     val title: Column<String> = varchar("title", 255)
     val group: Column<String?> = varchar("group", 255).nullable()

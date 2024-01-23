@@ -1,6 +1,10 @@
 import com.todolist.DatabaseFactory.databaseQuery
 import com.todolist.models.Activity
 import com.todolist.tables.Activities
+<<<<<<< Updated upstream
+=======
+import com.todolist.utils.RequestValidationResult
+>>>>>>> Stashed changes
 import io.ktor.http.HttpStatusCode
 import io.ktor.server.application.call
 import io.ktor.server.request.receive
@@ -20,9 +24,25 @@ import java.util.UUID
 fun Route.postActivityRoute() {
     post("/activity") {
         val request = call.receive<Activity>()
-        addNewActivity(request)
-        call.respond(status = HttpStatusCode.Created, request.userId)
+
+        when (val result = validateRequest(request)) {
+            is RequestValidationResult.Invalid -> call.respond(
+                status = HttpStatusCode.BadRequest,
+                message = result.errorMessage
+            )
+
+            RequestValidationResult.Valid -> {
+                addNewActivity(request)
+                call.respond(status = HttpStatusCode.Created, request.userId)
+            }
+        }
     }
+}
+
+private fun validateRequest(request: Activity): RequestValidationResult = when {
+    request.userId.isEmpty() -> RequestValidationResult.Invalid("Username must not be empty")
+    request.title.isEmpty() -> RequestValidationResult.Invalid("Title must not be empty")
+    else -> RequestValidationResult.Valid
 }
 
 suspend fun addNewActivity(activity: Activity) = databaseQuery {
