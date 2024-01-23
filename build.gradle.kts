@@ -8,6 +8,7 @@ plugins {
     kotlin("jvm") version "1.9.22"
     id("io.ktor.plugin") version "2.3.7"
     kotlin("plugin.serialization") version "1.4.21"
+    id("io.gitlab.arturbosch.detekt") version("1.23.3")
 }
 
 group = "com.todolist"
@@ -24,6 +25,11 @@ repositories {
     mavenCentral()
 }
 
+detekt {
+    config.setFrom(file("${project.rootDir}/config/detekt/detekt.yml"))
+    autoCorrect = true
+}
+
 dependencies {
     implementation("io.ktor:ktor-server-core-jvm")
     implementation("io.ktor:ktor-server-netty-jvm")
@@ -36,6 +42,7 @@ dependencies {
     implementation("org.jetbrains.exposed:exposed-java-time:$exposed_version")
     implementation("io.ktor:ktor-serialization-kotlinx-json:$ktor_version")
     implementation("io.ktor:ktor-server-request-validation:$ktor_version")
+    detektPlugins("io.gitlab.arturbosch.detekt:detekt-formatting:1.23.1")
     testImplementation("io.ktor:ktor-client-content-negotiation:2.1.1")
     testImplementation("io.ktor:ktor-server-tests-jvm")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version")

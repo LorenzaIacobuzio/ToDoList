@@ -10,7 +10,6 @@ import io.ktor.server.application.call
 import io.ktor.server.response.respond
 import io.ktor.server.routing.Route
 import io.ktor.server.routing.get
-import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.select
 
 fun Route.getActivitiesRoute() {
@@ -40,7 +39,6 @@ private fun isValidUUID(id: String): Boolean {
     return uuidPattern.matches(id)
 }
 
-
 suspend fun getActivitiesByUser(userId: String): List<Activity> = databaseQuery {
-    Activities.select{Activities.userId eq userId}.map {resultRowToActivity(it) }
+    Activities.select { Activities.userId eq userId }.map { resultRowToActivity(it) }
 }

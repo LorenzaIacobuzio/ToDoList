@@ -6,7 +6,6 @@ import com.todolist.models.Frequency
 import com.todolist.models.Priority
 import com.todolist.utils.testHttpClient
 import com.todolist.utils.toDoListTestApplication
-import io.ktor.client.network.sockets.mapEngineExceptions
 import io.ktor.client.request.post
 import io.ktor.client.request.setBody
 import io.ktor.client.statement.bodyAsText
