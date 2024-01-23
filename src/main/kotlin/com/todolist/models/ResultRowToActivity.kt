@@ -1,10 +1,9 @@
 package com.todolist.models
 
-import com.todolist.models.Activity
 import com.todolist.tables.Activities
 import org.jetbrains.exposed.sql.ResultRow
 
-fun resultRowToActivity(row : ResultRow) = Activity(
+fun resultRowToActivity(row: ResultRow) = Activity(
     userId = row[Activities.userId],
     title = row[Activities.title],
     group = row[Activities.group],

@@ -12,9 +12,6 @@ import io.ktor.server.response.respond
 import io.ktor.server.routing.Route
 import io.ktor.server.routing.post
 import org.jetbrains.exposed.sql.insert
-import org.jetbrains.exposed.sql.insertAndGetId
-import org.jetbrains.exposed.sql.select
-import java.util.UUID
 
 fun Route.postActivityRoute() {
     post("/activity") {
@@ -56,4 +53,3 @@ suspend fun addNewActivity(activity: Activity) = databaseQuery {
 
     insertStatement.resultedValues?.singleOrNull()?.let(::resultRowToActivity)
 }
-
