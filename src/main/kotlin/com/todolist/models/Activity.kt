@@ -1,4 +1,4 @@
-@file:UseSerializers(KInstantSerializer::class)
+@file:UseSerializers(KInstantSerializer::class, KUuidSerializer::class)
 
 package com.todolist.models
 

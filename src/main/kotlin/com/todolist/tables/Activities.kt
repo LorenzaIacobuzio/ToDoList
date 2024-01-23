@@ -2,6 +2,9 @@ package com.todolist.tables
 
 import com.todolist.models.Frequency
 import com.todolist.models.Priority
+import com.todolist.utils.KInstantSerializer
+import com.todolist.utils.KUuidSerializer
+import kotlinx.serialization.UseSerializers
 import org.jetbrains.exposed.dao.id.EntityID
 import org.jetbrains.exposed.dao.id.IdTable
 import org.jetbrains.exposed.dao.id.UUIDTable

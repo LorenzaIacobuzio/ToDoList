@@ -1,5 +1,6 @@
 package com.todolist
 
+import com.todolist.endpoints.getActivitiesRoute
 import com.todolist.tables.Activities
 import getStatusRoute
 import io.ktor.serialization.kotlinx.json.json
@@ -15,7 +16,8 @@ import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.SchemaUtils
 import org.jetbrains.exposed.sql.transactions.experimental.newSuspendedTransaction
 import org.jetbrains.exposed.sql.transactions.transaction
-import postActivityRoute
+import com.todolist.endpoints.postActivityRoute
+import io.ktor.server.plugins.requestvalidation.RequestValidation
 
 fun main() {
     embeddedServer(Netty, port = 8080, host = "localhost", module = Application::module).start(wait = true)
@@ -25,11 +27,13 @@ fun Application.module() {
     install(ContentNegotiation) {
         json()
     }
+    install(RequestValidation)
     DatabaseFactory.init("ToDoListDB")
     routing {
         route("/v1") {
             getStatusRoute()
             postActivityRoute()
+            getActivitiesRoute()
         }
     }
 }

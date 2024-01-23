@@ -1,11 +1,17 @@
 package com.todolist
 
+import com.todolist.endpoints.getActivitiesRoute
+import com.todolist.endpoints.postActivityRoute
+import getStatusRoute
 import io.ktor.serialization.kotlinx.json.json
 import io.ktor.server.application.Application
 import io.ktor.server.application.install
 import io.ktor.server.engine.embeddedServer
 import io.ktor.server.netty.Netty
 import io.ktor.server.plugins.contentnegotiation.ContentNegotiation
+import io.ktor.server.plugins.requestvalidation.RequestValidation
+import io.ktor.server.routing.route
+import io.ktor.server.routing.routing
 import kotlinx.coroutines.Dispatchers
 import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.SchemaUtils
@@ -20,5 +26,6 @@ fun Application.module() {
     install(ContentNegotiation) {
         json()
     }
+    install(RequestValidation)
     DatabaseFactory.init("ToDoListDBTest")
 }
