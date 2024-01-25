@@ -44,7 +44,7 @@ object DatabaseFactory {
             url = "jdbc:postgresql://localhost:5432/$databaseName",
             driver = "org.postgresql.Driver",
             user = "postgres",
-            password = "postgres"
+            password = "postgres",
         )
 
         transaction(database) {
