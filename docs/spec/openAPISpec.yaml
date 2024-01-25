@@ -1,0 +1,92 @@
+openapi: 3.0.2
+info:
+  version: '1.0.0'
+  title: ToDoListApp
+
+  contact:
+    email: lorenza.iacobuzio@gmail.com
+
+  description: A simple backend service for a to-do list app. It serves as a training ground to prove to the author that she is able to build a backend project from scratch.
+
+externalDocs:
+  description: Confluence documentation
+  url: 'https://lorenzaiacobuzio.atlassian.net/wiki/spaces/TA/pages/294914/To-do+list+app'
+
+servers:
+  - url: 'http://localhost:8080/v1'
+
+paths:
+  /v1/status:
+    get:
+      summary: Get server status
+      operationId: getStatus
+      responses:
+        '200':
+          description: Success
+        '500':
+          description: Server error
+
+  /v1/activity:
+    post:
+      summary: Create new activity in the database
+      operationId: postActivity
+      responses:
+        '201':
+          description: New activity created in the database
+        '500':
+          description: Server error
+
+  /v1/activities/{userId}:
+    get:
+      summary: Get list of activities associated to a user
+      operationId: getActivities
+      parameters:
+        - name: userId
+          in: query
+          description: User ID to fetch activities
+          required: true
+          schema:
+            type: String
+      responses:
+        '200':
+          description: List of activities successfully fetched
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Activity'
+        '404':
+          description: User not found
+        '500':
+          description: Server error
+
+components:
+  schemas:
+    Activity:
+      type: object
+      properties:
+        userId:
+          description: User ID the activity belongs to
+          type: String
+        title:
+          description: Activity title
+          type: String
+        group:
+          description: Group the activity belongs to
+          type: String
+        dueDate:
+          description: Date the activity is to be completed on
+          type: Instant
+        priority:
+          description: Activity priority
+          type: String
+          enum: {HIGH, MEDIUM, LOW}
+        description:
+          description: Activity description
+          type: String
+        rescheduledToDate:
+          description: Date the activity is rescheduled to
+          type: Instant
+        frequency:
+          description: Activity frequency
+          type: String
+          enum: {DAILY, WEEKLY, BYWEEKLY, MONTHLY, ONCE}
