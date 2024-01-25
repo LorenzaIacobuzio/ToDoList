@@ -1,0 +1,74 @@
+{
+	"info": {
+		"_postman_id": "2413ff68-08ce-486a-95f3-d34abaf9506a",
+		"name": "TodoList",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "32439334"
+	},
+	"item": [
+		{
+			"name": "Status",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/v1/status",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"v1",
+						"status"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Activities",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/v1/activities/e58ed763-928c-4155-bee9-fdbaaadc15f3",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"v1",
+						"activities",
+						"e58ed763-928c-4155-bee9-fdbaaadc15f3"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Activity",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"userId\": \"e58ed763-928c-4155-bee9-fdbaaadc15f3\",\n    \"title\": \"my first activity\",\n    \"dueDate\": \"2024-01-22T11:50:00.01Z\",\n    \"frequency\": \"ONCE\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/v1/activity",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"v1",
+						"activity"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
