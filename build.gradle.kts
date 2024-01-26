@@ -5,6 +5,7 @@ val exposed_version: String by project
 val postgresql_driver_version: String by project
 
 plugins {
+    application
     kotlin("jvm") version "1.9.22"
     id("io.ktor.plugin") version "2.3.7"
     kotlin("plugin.serialization") version "1.4.21"
@@ -42,6 +43,7 @@ dependencies {
     implementation("org.jetbrains.exposed:exposed-java-time:$exposed_version")
     implementation("io.ktor:ktor-serialization-kotlinx-json:$ktor_version")
     implementation("io.ktor:ktor-server-request-validation:$ktor_version")
+    implementation("com.zaxxer:HikariCP:3.4.2")
     detektPlugins("io.gitlab.arturbosch.detekt:detekt-formatting:1.23.1")
     testImplementation("io.ktor:ktor-client-content-negotiation:2.1.1")
     testImplementation("io.ktor:ktor-server-tests-jvm")
