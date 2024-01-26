@@ -46,7 +46,7 @@ paths:
           description: User ID to fetch activities
           required: true
           schema:
-            type: String
+            type: UUID
       responses:
         '200':
           description: List of activities successfully fetched
@@ -66,7 +66,7 @@ components:
       properties:
         userId:
           description: User ID the activity belongs to
-          type: String
+          type: UUID
         title:
           description: Activity title
           type: String
