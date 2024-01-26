@@ -1,9 +1,9 @@
 package com.todolist.endpoints
 
-import com.todolist.DatabaseFactory.databaseQuery
 import com.todolist.models.Activity
 import com.todolist.models.resultRowToActivity
 import com.todolist.tables.Activities
+import com.todolist.utils.DatabaseFactory.databaseQuery
 import com.todolist.utils.RequestValidationResult
 import io.ktor.http.HttpStatusCode
 import io.ktor.server.application.call

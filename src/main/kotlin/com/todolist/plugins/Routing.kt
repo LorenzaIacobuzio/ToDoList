@@ -1,15 +1,18 @@
 package com.todolist.plugins
 
+import com.todolist.endpoints.getActivitiesRoute
+import com.todolist.endpoints.getStatusRoute
+import com.todolist.endpoints.postActivityRoute
 import io.ktor.server.application.Application
-import io.ktor.server.application.call
-import io.ktor.server.response.respondText
-import io.ktor.server.routing.get
+import io.ktor.server.routing.route
 import io.ktor.server.routing.routing
 
 fun Application.configureRouting() {
     routing {
-        get("/") {
-            call.respondText("Hello World!")
+        route("/v1") {
+            getStatusRoute()
+            postActivityRoute()
+            getActivitiesRoute()
         }
     }
 }

@@ -11,18 +11,21 @@ jobs:
     runs-on: ubuntu-latest
     services:
       postgres:
-        image: postgres
+        image: postgres:latest
+        ports:
+          - 5432:5432
+        volumes:
+          - pgdata:/var/lib/postgresql/data
         env:
+          JDBC_URL: jdbc:postgresql://localhost:5432
+          PGUSER: postgres
           POSTGRES_DB: ToDoListDBTest
-          POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
         options: >-
           --health-cmd pg_isready
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
-        ports:
-          - 5432:5432
     steps:
       - uses: actions/checkout@v2
       - name: Set up JDK
@@ -31,9 +34,13 @@ jobs:
           java-version: 17
       - name: Set up Gradle
         uses: gradle/gradle-build-action@v2
+      - name: Run Detekt
+        run: ./gradlew detekt
       - name: Build
         run: ./gradlew assemble
       - name: Test
-        run: ./gradlew clean test --scan
+        run: ./gradlew clean test
         env:
-          DBURL: jdbc:postgresql://localhost:5432/ToDoListDBTest
+          DB_NAME: ToDoListDBTest
+          DB_USERNAME: postgres
+          DB_PASSWORD: postgres

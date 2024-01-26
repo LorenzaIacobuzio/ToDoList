@@ -1,20 +1,22 @@
 package com.todolist.endpoints
 
-import com.todolist.DatabaseFactory
 import com.todolist.models.Activity
 import com.todolist.models.Frequency
+import com.todolist.plugins.configureRouting
 import com.todolist.utils.testHttpClient
-import com.todolist.utils.toDoListTestApplication
 import io.ktor.client.call.body
+import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.request.get
 import io.ktor.client.request.post
 import io.ktor.client.request.setBody
 import io.ktor.http.ContentType
 import io.ktor.http.HttpStatusCode
 import io.ktor.http.contentType
+import io.ktor.serialization.kotlinx.json.json
+import io.ktor.server.config.ApplicationConfig
 import io.ktor.server.testing.ApplicationTestBuilder
+import io.ktor.server.testing.testApplication
 import java.time.Instant
-import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
@@ -28,13 +30,20 @@ class GetActivitiesRouteTest {
 
     private fun getActivitiesRouteTestApplication(
         block: suspend ApplicationTestBuilder.() -> Unit
-    ) = toDoListTestApplication {
-        block()
-    }
+    ) = testApplication {
+        createClient {
+            install(ContentNegotiation) {
+                json()
+            }
+        }
+        environment {
+            config = ApplicationConfig("application-test.conf")
+        }
+        application {
+            configureRouting()
+        }
 
-    @BeforeTest
-    fun emptyDatabase() {
-        DatabaseFactory.init("ToDoListDBTest")
+        block()
     }
 
     @Test
