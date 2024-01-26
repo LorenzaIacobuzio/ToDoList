@@ -17,12 +17,13 @@ import io.ktor.server.config.ApplicationConfig
 import io.ktor.server.testing.ApplicationTestBuilder
 import io.ktor.server.testing.testApplication
 import java.time.Instant
+import java.util.*
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
 class GetActivitiesRouteTest {
     private val mockActivity = Activity(
-        userId = "e58ed763-928c-4155-bee9-fdbaaadc15f3",
+        userId = UUID.fromString("e58ed763-928c-4155-bee9-fdbaaadc15f3"),
         title = "my test activity",
         dueDate = Instant.parse("2024-01-22T15:39:03.800453Z"),
         frequency = Frequency.ONCE

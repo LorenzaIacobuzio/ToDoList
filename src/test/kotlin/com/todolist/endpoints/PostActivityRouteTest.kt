@@ -18,12 +18,13 @@ import io.ktor.server.config.ApplicationConfig
 import io.ktor.server.testing.ApplicationTestBuilder
 import io.ktor.server.testing.testApplication
 import java.time.Instant
+import java.util.UUID
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
 class PostActivityRouteTest {
     private val mockActivity = Activity(
-        userId = "e58ed763-928c-4155-bee9-fdbaaadc15f3",
+        userId = UUID.fromString("e58ed763-928c-4155-bee9-fdbaaadc15f3"),
         title = "my test activity",
         dueDate = Instant.parse("2024-01-22T15:39:03.800453Z"),
         frequency = Frequency.ONCE
@@ -67,7 +68,7 @@ class PostActivityRouteTest {
     fun `post activity endpoint should return 200 when new activity with nullables is successfully inserted in db`() =
         postActivityRouteTestApplication {
             val mockActivityWithNullables = mockActivity.copy(
-                userId = "e58ed763-928c-4155-bee9-fdbaaadc15f4",
+                userId = UUID.fromString("e58ed763-928c-4155-bee9-fdbaaadc15f4"),
                 group = "Personal",
                 priority = Priority.LOW,
                 description = "Description",
@@ -86,30 +87,43 @@ class PostActivityRouteTest {
             assertEquals(mockActivityWithNullables, activitiesByUser.first())
         }
 
-    @Test
+    @Test(expected = IllegalArgumentException::class)
     fun `post activity endpoint should return 400 when userId is empty`() =
         postActivityRouteTestApplication {
-            val mockInvalidActivity = mockActivity.copy(userId = "")
+            val mockInvalidActivity = mockActivity.copy(userId = UUID.fromString(""))
             val response = testHttpClient().post("/v1/activity") {
                 contentType(ContentType.Application.Json)
                 setBody(mockInvalidActivity)
             }
 
             assertEquals(HttpStatusCode.BadRequest, response.status)
-            assertEquals("Username must not be empty", response.bodyAsText())
+            assertEquals("Invalid UUID format", response.bodyAsText())
         }
 
-    @Test
+    @Test(expected = IllegalArgumentException::class)
     fun `post activity endpoint should return 400 when userId is whitespace`() =
         postActivityRouteTestApplication {
-            val mockInvalidActivity = mockActivity.copy(userId = " ")
+            val mockInvalidActivity = mockActivity.copy(userId = UUID.fromString(" "))
             val response = testHttpClient().post("/v1/activity") {
                 contentType(ContentType.Application.Json)
                 setBody(mockInvalidActivity)
             }
 
             assertEquals(HttpStatusCode.BadRequest, response.status)
-            assertEquals("Username must not be whitespace", response.bodyAsText())
+            assertEquals("Invalid UUID format", response.bodyAsText())
+        }
+
+    @Test(expected = IllegalArgumentException::class)
+    fun `post activity endpoint should return 400 when userId is not UUID`() =
+        postActivityRouteTestApplication {
+            val mockInvalidActivity = mockActivity.copy(userId = UUID.fromString("e58ed763-928c-bee9-fdbaaadc15f3"))
+            val response = testHttpClient().post("/v1/activity") {
+                contentType(ContentType.Application.Json)
+                setBody(mockInvalidActivity)
+            }
+
+            assertEquals(HttpStatusCode.BadRequest, response.status)
+            assertEquals("Invalid UUID format", response.bodyAsText())
         }
 
     @Test

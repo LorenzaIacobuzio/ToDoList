@@ -44,6 +44,7 @@ dependencies {
     implementation("io.ktor:ktor-serialization-kotlinx-json:$ktor_version")
     implementation("io.ktor:ktor-server-request-validation:$ktor_version")
     implementation("com.zaxxer:HikariCP:3.4.2")
+    implementation("io.ktor:ktor-server-status-pages:$ktor_version")
     implementation("io.ktor:ktor-network-tls-certificates:$ktor_version")
     detektPlugins("io.gitlab.arturbosch.detekt:detekt-formatting:1.23.1")
     testImplementation("io.ktor:ktor-client-content-negotiation:2.1.1")

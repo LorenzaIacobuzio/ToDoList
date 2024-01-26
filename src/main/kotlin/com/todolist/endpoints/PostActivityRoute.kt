@@ -5,6 +5,7 @@ import com.todolist.models.resultRowToActivity
 import com.todolist.tables.Activities
 import com.todolist.utils.DatabaseFactory.databaseQuery
 import com.todolist.utils.RequestValidationResult
+import com.todolist.utils.isValidUUID
 import io.ktor.http.HttpStatusCode
 import io.ktor.server.application.call
 import io.ktor.server.request.receive
@@ -17,7 +18,7 @@ fun Route.postActivityRoute() {
     post("/activity") {
         val request = call.receive<Activity>()
 
-        when (val result = validateRequest(request)) {
+        when (val result = validateActivityRequest(request)) {
             is RequestValidationResult.Invalid -> call.respond(
                 status = HttpStatusCode.BadRequest,
                 message = result.errorMessage
@@ -31,11 +32,10 @@ fun Route.postActivityRoute() {
     }
 }
 
-private fun validateRequest(request: Activity): RequestValidationResult = when {
-    request.userId.isEmpty() -> RequestValidationResult.Invalid("Username must not be empty")
+private fun validateActivityRequest(request: Activity): RequestValidationResult = when {
     request.title.isEmpty() -> RequestValidationResult.Invalid("Title must not be empty")
-    request.userId == " " -> RequestValidationResult.Invalid("Username must not be whitespace")
     request.title == " " -> RequestValidationResult.Invalid("Title must not be whitespace")
+    !isValidUUID(request.userId.toString()) -> RequestValidationResult.Invalid("Invalid UUID format")
     else -> RequestValidationResult.Valid
 }
 
