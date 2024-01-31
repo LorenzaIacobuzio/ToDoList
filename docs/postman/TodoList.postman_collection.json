@@ -88,6 +88,61 @@
 				}
 			},
 			"response": []
+		},
+		{
+			"name": "Activity",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"id\": \"e58ed763-928c-6666-bee9-fdbaaadc15f3\",\n    \"userId\": \"e58ed763-928c-1111-bee9-fdbaaadc15f3\",\n    \"title\": \"my updated activity\",\n    \"dueDate\": \"2024-01-22T11:50:00.01Z\",\n    \"frequency\": \"ONCE\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/v1/activity",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"v1",
+						"activity"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Activity",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/v1/activity/{{id}}",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"v1",
+						"activity",
+						"{{id}}"
+					]
+				}
+			},
+			"response": []
 		}
 	]
 }
