@@ -11,6 +11,7 @@ import java.util.UUID
 
 @Serializable
 data class Activity(
+    val id: UUID,
     val userId: UUID,
     val title: String,
     val group: String? = null,

@@ -24,6 +24,7 @@ import kotlin.test.assertEquals
 
 class PostActivityRouteTest {
     private val mockActivity = Activity(
+        id = UUID.fromString("e58ed763-928c-6666-bee9-fdbaaadc15f3"),
         userId = UUID.fromString("e58ed763-928c-4155-bee9-fdbaaadc15f3"),
         title = "my test activity",
         dueDate = Instant.parse("2024-01-22T15:39:03.800453Z"),
@@ -56,7 +57,7 @@ class PostActivityRouteTest {
                 contentType(ContentType.Application.Json)
                 setBody(mockActivity)
             }
-            val activitiesByUser: List<Activity> = getActivitiesByUser(mockActivity.userId)
+            val activitiesByUser: List<Activity> = getActivities(mockActivity.userId)
 
             assertEquals(HttpStatusCode.Created, response.status)
             assertEquals("Activity added to list", response.bodyAsText())
@@ -79,7 +80,7 @@ class PostActivityRouteTest {
                 contentType(ContentType.Application.Json)
                 setBody(mockActivityWithNullables)
             }
-            val activitiesByUser: List<Activity> = getActivitiesByUser(mockActivityWithNullables.userId)
+            val activitiesByUser: List<Activity> = getActivities(mockActivityWithNullables.userId)
 
             assertEquals(HttpStatusCode.Created, response.status)
             assertEquals("Activity added to list", response.bodyAsText())

@@ -17,11 +17,11 @@ import io.ktor.server.config.ApplicationConfig
 import io.ktor.server.testing.ApplicationTestBuilder
 import io.ktor.server.testing.testApplication
 import java.time.Instant
-import java.util.*
+import java.util.UUID
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
-class GetActivitiesRouteTest {
+class GetActivityRouteTest {
     private val mockActivity = Activity(
         id = UUID.fromString("e58ed763-928c-6666-bee9-fdbaaadc15f3"),
         userId = UUID.fromString("e58ed763-928c-4155-bee9-fdbaaadc15f3"),
@@ -30,7 +30,7 @@ class GetActivitiesRouteTest {
         frequency = Frequency.ONCE
     )
 
-    private fun getActivitiesRouteTestApplication(
+    private fun getActivityRouteTestApplication(
         block: suspend ApplicationTestBuilder.() -> Unit
     ) = testApplication {
         createClient {
@@ -49,47 +49,44 @@ class GetActivitiesRouteTest {
     }
 
     @Test
-    fun `get activities endpoint should return 200 and list of activities by user when user ID is valid`() =
-        getActivitiesRouteTestApplication {
-            repeat(3) {
-                testHttpClient().post("/v1/activity") {
-                    contentType(ContentType.Application.Json)
-                    setBody(mockActivity)
-                }
+    fun `get activity endpoint should return 200 and activity when ID is valid`() =
+        getActivityRouteTestApplication {
+            testHttpClient().post("/v1/activity") {
+                contentType(ContentType.Application.Json)
+                setBody(mockActivity)
             }
 
-            val userId = "e58ed763-928c-4155-bee9-fdbaaadc15f3"
-            val response = testHttpClient().get("/v1/activities/$userId")
-            val activities: List<Activity> = response.body<List<Activity>>()
+            val id = "e58ed763-928c-6666-bee9-fdbaaadc15f3"
+            val response = testHttpClient().get("/v1/activity/$id")
+            val activity: Activity = response.body<Activity>()
 
             assertEquals(HttpStatusCode.OK, response.status)
-            assertEquals(3, activities.size)
-            assertEquals(mockActivity, activities.first())
+            assertEquals(mockActivity, activity)
         }
 
     @Test
-    fun `get activities endpoint should return 404 when user ID is empty`() =
-        getActivitiesRouteTestApplication {
-            val userId = ""
-            val response = testHttpClient().get("/v1/activities/$userId/")
+    fun `get activity endpoint should return 404 when ID is empty`() =
+        getActivityRouteTestApplication {
+            val id = ""
+            val response = testHttpClient().get("/v1/activities/$id/")
 
             assertEquals(HttpStatusCode.NotFound, response.status)
         }
 
     @Test
-    fun `get activities endpoint should return 404 when user ID is whitespace`() =
-        getActivitiesRouteTestApplication {
-            val userId = " "
-            val response = testHttpClient().get("/v1/activities/$userId/")
+    fun `get activity endpoint should return 404 when ID is whitespace`() =
+        getActivityRouteTestApplication {
+            val id = " "
+            val response = testHttpClient().get("/v1/activities/$id/")
 
             assertEquals(HttpStatusCode.NotFound, response.status)
         }
 
     @Test
-    fun `get activities endpoint should return 400 when user ID is invalid`() =
-        getActivitiesRouteTestApplication {
-            val userId = "invalidUserId"
-            val response = testHttpClient().get("/v1/activities/$userId")
+    fun `get activity endpoint should return 400 when ID is invalid`() =
+        getActivityRouteTestApplication {
+            val id = "invalidId"
+            val response = testHttpClient().get("/v1/activities/$id")
 
             assertEquals(HttpStatusCode.BadRequest, response.status)
         }

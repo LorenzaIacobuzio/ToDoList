@@ -36,11 +36,13 @@ private fun validateActivityRequest(request: Activity): RequestValidationResult 
     request.title.isEmpty() -> RequestValidationResult.Invalid("Title must not be empty")
     request.title == " " -> RequestValidationResult.Invalid("Title must not be whitespace")
     !isValidUUID(request.userId.toString()) -> RequestValidationResult.Invalid("Invalid UUID format")
+    !isValidUUID(request.id.toString()) -> RequestValidationResult.Invalid("Invalid UUID format")
     else -> RequestValidationResult.Valid
 }
 
 suspend fun addNewActivity(activity: Activity) = databaseQuery {
     val insertStatement = Activities.insert {
+        it[id] = activity.id
         it[userId] = activity.userId
         it[title] = activity.title
         it[group] = activity.group
