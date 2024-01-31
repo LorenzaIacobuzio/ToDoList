@@ -46,6 +46,7 @@ dependencies {
     implementation("com.zaxxer:HikariCP:3.4.2")
     implementation("io.ktor:ktor-server-status-pages:$ktor_version")
     implementation("io.ktor:ktor-network-tls-certificates:$ktor_version")
+    implementation("org.mindrot:jbcrypt:0.4")
     detektPlugins("io.gitlab.arturbosch.detekt:detekt-formatting:1.23.1")
     testImplementation("io.ktor:ktor-client-content-negotiation:2.1.1")
     testImplementation("io.ktor:ktor-server-tests-jvm")

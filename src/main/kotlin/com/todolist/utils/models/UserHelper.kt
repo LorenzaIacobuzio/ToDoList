@@ -9,10 +9,19 @@ import org.jetbrains.exposed.sql.ResultRow
 import org.jetbrains.exposed.sql.insert
 import org.jetbrains.exposed.sql.select
 import org.jetbrains.exposed.sql.selectAll
+import org.mindrot.jbcrypt.BCrypt
 
 suspend fun isUserAlreadyPresent(user: User): Boolean = DatabaseFactory.databaseQuery {
     val userIdExists = Users.select { Users.userId eq user.userId }.map { resultRowToUser(it) }.isNotEmpty()
-    val usernameExists = Users.select { Users.username eq user.username }.map { resultRowToUser(it) }.isNotEmpty()
+    val allUsernames = Users.selectAll().map { resultRowToUser(it).username }
+    var usernameExists = false
+
+    allUsernames.forEach {
+        if (BCrypt.checkpw(user.username, it)) {
+            usernameExists = true
+        }
+    }
+
     val userIsPresent = userIdExists || usernameExists
 
     return@databaseQuery userIsPresent
@@ -45,4 +54,11 @@ fun validateUserRequest(request: User): RequestValidationResult = when {
 
 suspend fun getUsers(): List<User> = DatabaseFactory.databaseQuery {
     Users.selectAll().map { resultRowToUser(it) }
+}
+
+fun hashUserCredentials(user: User): User {
+    val hashedUsername = BCrypt.hashpw(user.username, BCrypt.gensalt())
+    val hashedPassword = BCrypt.hashpw(user.password, BCrypt.gensalt())
+
+    return User(user.userId, hashedUsername, hashedPassword)
 }
