@@ -121,6 +121,25 @@ paths:
         '500':
           description: Server error
 
+  /v1/user:
+    post:
+      summary: Create new user in the database
+      operationId: postUser
+      requestBody:
+        description: User body
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        '201':
+          description: New user created in the database
+        '409':
+          description: User already exists in the database
+        '500':
+          description: Server error
+
 components:
   schemas:
     Activity:
@@ -161,3 +180,20 @@ components:
         - title
         - dueDate
         - frequency
+
+    User:
+      type: object
+      properties:
+        userId:
+          description: User ID
+          type: UUID
+        username:
+          description: Username
+          type: String
+        password:
+          description: Password
+          type: String
+      required:
+        - userId
+        - username
+        - password

@@ -3,6 +3,7 @@ package com.todolist.endpoints
 import com.todolist.models.Activity
 import com.todolist.models.Frequency
 import com.todolist.plugins.configureRouting
+import com.todolist.utils.configureDatabase
 import com.todolist.utils.testHttpClient
 import io.ktor.client.call.body
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
@@ -42,6 +43,7 @@ class GetActivityRouteTest {
             config = ApplicationConfig("application-test.conf")
         }
         application {
+            configureDatabase(environment.config, true)
             configureRouting()
         }
 

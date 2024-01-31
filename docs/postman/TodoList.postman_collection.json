@@ -90,6 +90,33 @@
 			"response": []
 		},
 		{
+			"name": "User",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"userId\": \"e58ed763-928c-1111-bee9-fdbaaadc15f3\",\n    \"username\": \"Lorenza\",\n    \"password\": \"lorenza\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/v1/user",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"v1",
+						"user"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "Activity",
 			"request": {
 				"method": "PUT",

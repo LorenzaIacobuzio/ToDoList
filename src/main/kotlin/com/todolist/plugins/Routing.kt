@@ -5,6 +5,7 @@ import com.todolist.endpoints.getActivitiesRoute
 import com.todolist.endpoints.getActivityRoute
 import com.todolist.endpoints.getStatusRoute
 import com.todolist.endpoints.postActivityRoute
+import com.todolist.endpoints.postUserRoute
 import com.todolist.endpoints.putActivityRoute
 import io.ktor.server.application.Application
 import io.ktor.server.routing.route
@@ -16,6 +17,7 @@ fun Application.configureRouting() {
             getStatusRoute()
             getActivityRoute()
             getActivitiesRoute()
+            postUserRoute()
             postActivityRoute()
             putActivityRoute()
             deleteActivityRoute()

@@ -4,7 +4,7 @@ import com.todolist.models.Activity
 import com.todolist.models.Frequency
 import com.todolist.models.Priority
 import com.todolist.plugins.configureRouting
-import com.todolist.utils.DatabaseFactory
+import com.todolist.utils.configureDatabase
 import com.todolist.utils.getActivities
 import com.todolist.utils.testHttpClient
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
@@ -44,7 +44,7 @@ class PostActivityRouteTest {
             config = ApplicationConfig("application-test.conf")
         }
         application {
-            DatabaseFactory.init(environment.config)
+            configureDatabase(environment.config, true)
             configureRouting()
         }
 

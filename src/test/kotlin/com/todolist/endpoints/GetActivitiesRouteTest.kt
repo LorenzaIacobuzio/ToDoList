@@ -3,6 +3,7 @@ package com.todolist.endpoints
 import com.todolist.models.Activity
 import com.todolist.models.Frequency
 import com.todolist.plugins.configureRouting
+import com.todolist.utils.configureDatabase
 import com.todolist.utils.testHttpClient
 import io.ktor.client.call.body
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
@@ -17,7 +18,7 @@ import io.ktor.server.config.ApplicationConfig
 import io.ktor.server.testing.ApplicationTestBuilder
 import io.ktor.server.testing.testApplication
 import java.time.Instant
-import java.util.*
+import java.util.UUID
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
@@ -42,6 +43,7 @@ class GetActivitiesRouteTest {
             config = ApplicationConfig("application-test.conf")
         }
         application {
+            configureDatabase(environment.config, true)
             configureRouting()
         }
 

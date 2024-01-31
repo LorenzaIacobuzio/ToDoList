@@ -1,6 +1,7 @@
 package com.todolist.utils
 
 import com.todolist.tables.Activities
+import com.todolist.tables.Users
 import com.zaxxer.hikari.HikariConfig
 import com.zaxxer.hikari.HikariDataSource
 import io.ktor.server.config.ApplicationConfig
@@ -11,7 +12,7 @@ import org.jetbrains.exposed.sql.transactions.experimental.newSuspendedTransacti
 import org.jetbrains.exposed.sql.transactions.transaction
 
 object DatabaseFactory {
-    fun init(config: ApplicationConfig) {
+    fun init(config: ApplicationConfig): Database {
         val driverClassName = config.property("ktor.database.driverClassName").getString()
         val jdbcURL = config.property("ktor.database.jdbcURL").getString()
         val maxPoolSize = config.property("ktor.database.maxPoolSize").getString()
@@ -25,10 +26,8 @@ object DatabaseFactory {
             maxPoolSize.toInt(),
             autoCommit.toBoolean()
         )
-        val database = Database.connect(connectionPool)
-        transaction(database) {
-            createActivitiesTable()
-        }
+
+        return Database.connect(connectionPool)
     }
 
     private fun createHikariDataSource(
@@ -47,9 +46,18 @@ object DatabaseFactory {
         }
     )
 
-    private fun createActivitiesTable() {
-        SchemaUtils.drop(Activities)
-        SchemaUtils.create(Activities)
+    fun createTables(database: Database) {
+        transaction(database) {
+            SchemaUtils.create(Activities)
+            SchemaUtils.create(Users)
+        }
+    }
+
+    fun dropTables(database: Database) {
+        transaction(database) {
+            SchemaUtils.drop(Activities)
+            SchemaUtils.drop(Users)
+        }
     }
 
     suspend fun <T> databaseQuery(block: suspend () -> T): T =
