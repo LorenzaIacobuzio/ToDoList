@@ -2,14 +2,15 @@ package com.todolist.tables
 
 import com.todolist.models.Frequency
 import com.todolist.models.Priority
-import org.jetbrains.exposed.dao.id.UUIDTable
 import org.jetbrains.exposed.sql.Column
+import org.jetbrains.exposed.sql.Table
 import org.jetbrains.exposed.sql.javatime.timestamp
 import java.time.Instant
 import java.util.UUID
 
 @Suppress("MagicNumber")
-object Activities : UUIDTable("Activities", "id") {
+object Activities : Table("Activities") {
+    val id: Column<UUID> = uuid("id")
     val userId: Column<UUID> = uuid("userId")
     val title: Column<String> = varchar("title", 255)
     val group: Column<String?> = varchar("group", 255).nullable()

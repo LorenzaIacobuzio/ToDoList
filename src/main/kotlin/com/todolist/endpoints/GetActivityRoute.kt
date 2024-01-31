@@ -14,23 +14,23 @@ import io.ktor.server.routing.get
 import org.jetbrains.exposed.sql.select
 import java.util.UUID
 
-fun Route.getActivitiesRoute() {
-    get("/activities/{userId}") {
-        val userId = requireNotNull(call.parameters["userId"])
-        when (val result = validateId(userId)) {
+fun Route.getActivityRoute() {
+    get("/activity/{id}") {
+        val id = requireNotNull(call.parameters["id"])
+        when (val result = validateId(id)) {
             is RequestValidationResult.Invalid -> call.respond(
                 status = HttpStatusCode.BadRequest,
                 message = result.errorMessage
             )
 
             is RequestValidationResult.Valid -> {
-                val activitiesByUserId = getActivities(UUID.fromString(userId))
-                call.respond(status = HttpStatusCode.OK, activitiesByUserId)
+                val activity = getActivity(UUID.fromString(id))
+                call.respond(status = HttpStatusCode.OK, activity)
             }
         }
     }
 }
 
-suspend fun getActivities(userId: UUID): List<Activity> = databaseQuery {
-    Activities.select { Activities.userId eq userId }.map { resultRowToActivity(it) }
+suspend fun getActivity(id: UUID): Activity = databaseQuery {
+    Activities.select { Activities.id eq id }.map { resultRowToActivity(it) }.first()
 }

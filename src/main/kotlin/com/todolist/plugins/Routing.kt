@@ -1,6 +1,7 @@
 package com.todolist.plugins
 
 import com.todolist.endpoints.getActivitiesRoute
+import com.todolist.endpoints.getActivityRoute
 import com.todolist.endpoints.getStatusRoute
 import com.todolist.endpoints.postActivityRoute
 import io.ktor.server.application.Application
@@ -11,8 +12,9 @@ fun Application.configureRouting() {
     routing {
         route("/v1") {
             getStatusRoute()
-            postActivityRoute()
+            getActivityRoute()
             getActivitiesRoute()
+            postActivityRoute()
         }
     }
 }
