@@ -1,9 +1,9 @@
-package com.todolist.endpoints
+package com.todolist.endpoints.post
 
 import com.todolist.models.User
 import com.todolist.plugins.configureRouting
-import com.todolist.utils.configureDatabase
-import com.todolist.utils.getUsers
+import com.todolist.utils.database.configureDatabase
+import com.todolist.utils.models.getUsers
 import com.todolist.utils.testHttpClient
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.request.post

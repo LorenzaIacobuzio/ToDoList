@@ -1,10 +1,10 @@
-package com.todolist.endpoints
+package com.todolist.endpoints.post
 
 import com.todolist.models.User
-import com.todolist.utils.RequestValidationResult
-import com.todolist.utils.addNewUser
-import com.todolist.utils.isUserAlreadyPresent
-import com.todolist.utils.validateUserRequest
+import com.todolist.utils.models.addNewUser
+import com.todolist.utils.models.isUserAlreadyPresent
+import com.todolist.utils.models.validateUserRequest
+import com.todolist.utils.validation.RequestValidationResult
 import io.ktor.http.HttpStatusCode
 import io.ktor.server.application.call
 import io.ktor.server.request.receive

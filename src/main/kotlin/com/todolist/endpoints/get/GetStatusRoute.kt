@@ -1,4 +1,4 @@
-package com.todolist.endpoints
+package com.todolist.endpoints.get
 
 import io.ktor.http.HttpStatusCode
 import io.ktor.server.application.call

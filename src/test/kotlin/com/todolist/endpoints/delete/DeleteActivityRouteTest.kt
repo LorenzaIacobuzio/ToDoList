@@ -1,10 +1,10 @@
-package com.todolist.endpoints
+package com.todolist.endpoints.delete
 
 import com.todolist.models.Activity
 import com.todolist.models.Frequency
 import com.todolist.plugins.configureRouting
-import com.todolist.utils.configureDatabase
-import com.todolist.utils.getActivities
+import com.todolist.utils.database.configureDatabase
+import com.todolist.utils.models.getActivities
 import com.todolist.utils.testHttpClient
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.request.delete

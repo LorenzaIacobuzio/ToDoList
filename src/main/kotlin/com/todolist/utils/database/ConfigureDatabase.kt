@@ -1,4 +1,4 @@
-package com.todolist.utils
+package com.todolist.utils.database
 
 import io.ktor.server.config.ApplicationConfig
 

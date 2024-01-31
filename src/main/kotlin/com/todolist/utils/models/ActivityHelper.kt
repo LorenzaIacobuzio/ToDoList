@@ -1,7 +1,10 @@
-package com.todolist.utils
+package com.todolist.utils.models
 
 import com.todolist.models.Activity
 import com.todolist.tables.Activities
+import com.todolist.utils.database.DatabaseFactory
+import com.todolist.utils.validation.RequestValidationResult
+import com.todolist.utils.validation.isValidUUID
 import org.jetbrains.exposed.sql.ResultRow
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.deleteWhere

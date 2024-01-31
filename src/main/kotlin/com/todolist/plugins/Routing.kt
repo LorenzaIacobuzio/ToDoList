@@ -1,12 +1,12 @@
 package com.todolist.plugins
 
-import com.todolist.endpoints.deleteActivityRoute
-import com.todolist.endpoints.getActivitiesRoute
-import com.todolist.endpoints.getActivityRoute
-import com.todolist.endpoints.getStatusRoute
-import com.todolist.endpoints.postActivityRoute
-import com.todolist.endpoints.postUserRoute
-import com.todolist.endpoints.putActivityRoute
+import com.todolist.endpoints.delete.deleteActivityRoute
+import com.todolist.endpoints.get.getActivitiesRoute
+import com.todolist.endpoints.get.getActivityRoute
+import com.todolist.endpoints.get.getStatusRoute
+import com.todolist.endpoints.post.postActivityRoute
+import com.todolist.endpoints.post.postUserRoute
+import com.todolist.endpoints.put.putActivityRoute
 import io.ktor.server.application.Application
 import io.ktor.server.routing.route
 import io.ktor.server.routing.routing
