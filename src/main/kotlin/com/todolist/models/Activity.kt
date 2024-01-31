@@ -2,8 +2,8 @@
 
 package com.todolist.models
 
-import com.todolist.utils.KInstantSerializer
-import com.todolist.utils.KUuidSerializer
+import com.todolist.utils.serializers.KInstantSerializer
+import com.todolist.utils.serializers.KUuidSerializer
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.UseSerializers
 import java.time.Instant

@@ -1,4 +1,4 @@
-package com.todolist.utils
+package com.todolist.utils.database
 
 import com.todolist.tables.Activities
 import com.todolist.tables.Users

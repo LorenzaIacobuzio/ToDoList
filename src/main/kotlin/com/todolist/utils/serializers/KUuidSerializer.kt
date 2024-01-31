@@ -1,4 +1,4 @@
-package com.todolist.utils
+package com.todolist.utils.serializers
 
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.descriptors.PrimitiveKind

@@ -1,18 +1,18 @@
-package com.todolist.endpoints
+package com.todolist.endpoints.put
 
 import com.todolist.models.Activity
-import com.todolist.utils.RequestValidationResult
-import com.todolist.utils.addNewActivity
-import com.todolist.utils.validateActivityRequest
+import com.todolist.utils.models.updateActivity
+import com.todolist.utils.models.validateActivityRequest
+import com.todolist.utils.validation.RequestValidationResult
 import io.ktor.http.HttpStatusCode
 import io.ktor.server.application.call
 import io.ktor.server.request.receive
 import io.ktor.server.response.respond
 import io.ktor.server.routing.Route
-import io.ktor.server.routing.post
+import io.ktor.server.routing.put
 
-fun Route.postActivityRoute() {
-    post("/activity") {
+fun Route.putActivityRoute() {
+    put("/activity") {
         val request = call.receive<Activity>()
 
         when (val result = validateActivityRequest(request)) {
@@ -22,8 +22,8 @@ fun Route.postActivityRoute() {
             )
 
             RequestValidationResult.Valid -> {
-                addNewActivity(request)
-                call.respond(status = HttpStatusCode.Created, message = "Activity added to list")
+                updateActivity(request)
+                call.respond(status = HttpStatusCode.Created, message = "Activity updated")
             }
         }
     }

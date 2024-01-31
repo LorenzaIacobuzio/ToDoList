@@ -1,8 +1,8 @@
-package com.todolist.endpoints
+package com.todolist.endpoints.get
 
-import com.todolist.utils.RequestValidationResult
-import com.todolist.utils.getActivity
-import com.todolist.utils.validateId
+import com.todolist.utils.models.getActivity
+import com.todolist.utils.validation.RequestValidationResult
+import com.todolist.utils.validation.validateId
 import io.ktor.http.HttpStatusCode
 import io.ktor.server.application.call
 import io.ktor.server.response.respond
