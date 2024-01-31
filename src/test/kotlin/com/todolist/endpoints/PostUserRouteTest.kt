@@ -62,7 +62,7 @@ class PostUserRouteTest {
         }
 
     @Test
-    fun `post user endpoint should return 409 when user already exists in db`() =
+    fun `post user endpoint should return 409 when user with same user ID already exists in db`() =
         postUserRouteTestApplication {
             val response = testHttpClient().post("/v1/user") {
                 contentType(ContentType.Application.Json)
@@ -74,9 +74,33 @@ class PostUserRouteTest {
             assertEquals(1, users.size)
             assertEquals(mockUser, users.first())
 
+            val duplicateUser = mockUser.copy(username = "new username")
             val newResponse = testHttpClient().post("/v1/user") {
                 contentType(ContentType.Application.Json)
+                setBody(duplicateUser)
+            }
+
+            assertEquals(HttpStatusCode.Conflict, newResponse.status)
+            assertEquals("User already exists", newResponse.bodyAsText())
+        }
+
+    @Test
+    fun `post user endpoint should return 409 when user with same username already exists in db`() =
+        postUserRouteTestApplication {
+            val response = testHttpClient().post("/v1/user") {
+                contentType(ContentType.Application.Json)
                 setBody(mockUser)
+            }
+            val users: List<User> = getUsers()
+
+            assertEquals(HttpStatusCode.Created, response.status)
+            assertEquals(1, users.size)
+            assertEquals(mockUser, users.first())
+
+            val duplicateUser = mockUser.copy(userId = UUID.fromString("e58ed763-928c-3737-bee9-fdbaaadc15f3"))
+            val newResponse = testHttpClient().post("/v1/user") {
+                contentType(ContentType.Application.Json)
+                setBody(duplicateUser)
             }
 
             assertEquals(HttpStatusCode.Conflict, newResponse.status)
