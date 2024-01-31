@@ -8,7 +8,11 @@ import org.jetbrains.exposed.sql.select
 import org.jetbrains.exposed.sql.selectAll
 
 suspend fun isUserAlreadyPresent(user: User): Boolean = DatabaseFactory.databaseQuery {
-    Users.select { Users.userId eq user.userId }.map { resultRowToUser(it) }.isNotEmpty()
+    val userIdExists = Users.select { Users.userId eq user.userId }.map { resultRowToUser(it) }.isNotEmpty()
+    val usernameExists = Users.select { Users.username eq user.username }.map { resultRowToUser(it) }.isNotEmpty()
+    val userIsPresent = userIdExists || usernameExists
+
+    return@databaseQuery userIsPresent
 }
 
 suspend fun addNewUser(user: User) = DatabaseFactory.databaseQuery {
