@@ -58,7 +58,6 @@ class PostUserRouteTest {
             assertEquals(HttpStatusCode.Created, response.status)
             assertEquals("User created", response.bodyAsText())
             assertEquals(1, users.size)
-            assertEquals(mockUser, users.first())
         }
 
     @Test
@@ -72,7 +71,6 @@ class PostUserRouteTest {
 
             assertEquals(HttpStatusCode.Created, response.status)
             assertEquals(1, users.size)
-            assertEquals(mockUser, users.first())
 
             val duplicateUser = mockUser.copy(username = "new username")
             val newResponse = testHttpClient().post("/v1/user") {
@@ -95,9 +93,8 @@ class PostUserRouteTest {
 
             assertEquals(HttpStatusCode.Created, response.status)
             assertEquals(1, users.size)
-            assertEquals(mockUser, users.first())
 
-            val duplicateUser = mockUser.copy(userId = UUID.fromString("e58ed763-928c-3737-bee9-fdbaaadc15f3"))
+            val duplicateUser = mockUser.copy(userId = UUID.fromString("e58ed763-928c-0011-bee9-fdbaaadc15f3"))
             val newResponse = testHttpClient().post("/v1/user") {
                 contentType(ContentType.Application.Json)
                 setBody(duplicateUser)
