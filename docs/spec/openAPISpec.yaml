@@ -26,16 +26,6 @@ paths:
         '500':
           description: Server error
 
-  /v1/activity:
-    post:
-      summary: Create new activity in the database
-      operationId: postActivity
-      responses:
-        '201':
-          description: New activity created in the database
-        '500':
-          description: Server error
-
   /v1/activities/{userId}:
     get:
       summary: Get list of activities associated to a user
@@ -59,7 +49,7 @@ paths:
         '500':
           description: Server error
 
-  /v1/activitiy/{id}:
+  /v1/activity/{id}:
     get:
       summary: Get activity by ID
       operationId: getActivity
@@ -79,6 +69,55 @@ paths:
                 $ref: '#/components/schemas/Activity'
         '404':
           description: Activity not found
+        '500':
+          description: Server error
+    delete:
+      summary: Delete activity by ID
+      operationId: deleteActivity
+      parameters:
+        - name: id
+          in: query
+          description: Activity ID
+          required: true
+          schema:
+            type: UUID
+      responses:
+        '200':
+          description: Activity successfully deleted
+        '404':
+          description: Activity not found
+        '500':
+          description: Server error
+
+  /v1/activity:
+    post:
+      summary: Create new activity in the database
+      operationId: postActivity
+      requestBody:
+        description: Activity body
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Activity'
+      responses:
+        '201':
+          description: New activity created in the database
+        '500':
+          description: Server error
+    put:
+      summary: Update activity in the database
+      operationId: putActivity
+      requestBody:
+        description: Activity body
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Activity'
+      responses:
+        '201':
+          description: Activity updated in the database
         '500':
           description: Server error
 
