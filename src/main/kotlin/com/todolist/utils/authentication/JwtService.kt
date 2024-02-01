@@ -23,6 +23,7 @@ class JwtService(
         .withIssuer(issuer)
         .build()
 
+    @Suppress("MagicNumber")
     suspend fun createJwtToken(loginRequest: Login): String? {
         return if (areLoginCredentialsPresent(loginRequest.username, loginRequest.password)) {
             JWT.create()

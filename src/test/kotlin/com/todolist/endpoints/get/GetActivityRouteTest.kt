@@ -25,27 +25,6 @@ class GetActivityRouteTest {
         frequency = Frequency.ONCE
     )
 
-/*
-    private fun getActivityRouteTestApplication(
-        block: suspend ApplicationTestBuilder.() -> Unit
-    ) = testApplication {
-        createClient {
-            install(ContentNegotiation) {
-                json()
-            }
-        }
-        environment {
-            config = ApplicationConfig("application-test.conf")
-        }
-        application {
-            val jwtService = JwtService(this)
-            configureDatabase(environment.config, true)
-            configureRouting(jwtService)
-        }
-
-        block()
-    }
-*/
     @Test
     fun `get activity endpoint should return 200 and activity when ID is valid`() =
         configureTestApplication {
@@ -64,7 +43,7 @@ class GetActivityRouteTest {
 
     @Test
     fun `get activity endpoint should return 404 when ID is empty`() =
-        getActivityRouteTestApplication {
+        configureTestApplication {
             val id = ""
             val response = testHttpClient().get("/v1/activities/$id/")
 
@@ -73,7 +52,7 @@ class GetActivityRouteTest {
 
     @Test
     fun `get activity endpoint should return 404 when ID is whitespace`() =
-        getActivityRouteTestApplication {
+        configureTestApplication {
             val id = " "
             val response = testHttpClient().get("/v1/activities/$id/")
 
@@ -82,7 +61,7 @@ class GetActivityRouteTest {
 
     @Test
     fun `get activity endpoint should return 400 when ID is invalid`() =
-        getActivityRouteTestApplication {
+        configureTestApplication {
             val id = "invalidId"
             val response = testHttpClient().get("/v1/activities/$id")
 

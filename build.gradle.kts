@@ -49,6 +49,7 @@ dependencies {
     implementation("org.mindrot:jbcrypt:0.4")
     implementation("io.ktor:ktor-server-auth:$ktor_version")
     implementation("io.ktor:ktor-server-auth-jwt:$ktor_version")
+    implementation("io.ktor:ktor-client-auth:$ktor_version")
     implementation("io.ktor:ktor-server-sessions:$ktor_version")
     detektPlugins("io.gitlab.arturbosch.detekt:detekt-formatting:1.23.1")
     testImplementation("io.ktor:ktor-client-content-negotiation:2.1.1")

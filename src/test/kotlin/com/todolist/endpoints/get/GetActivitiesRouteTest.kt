@@ -2,6 +2,7 @@ package com.todolist.endpoints.get
 
 import com.todolist.models.Activity
 import com.todolist.models.Frequency
+import com.todolist.utils.configureTestApplication
 import com.todolist.utils.testHttpClient
 import io.ktor.client.call.body
 import io.ktor.client.request.get
@@ -26,9 +27,10 @@ class GetActivitiesRouteTest {
 
     @Test
     fun `get activities endpoint should return 200 and list of activities by user when user ID is valid`() =
-        getActivitiesRouteTestApplication {
+        configureTestApplication {
             repeat(3) {
                 testHttpClient().post("/v1/activity") {
+                    // headers.append("Authorization", "Bearer ${authenticationToken}")
                     contentType(ContentType.Application.Json)
                     setBody(mockActivity)
                 }
@@ -45,7 +47,7 @@ class GetActivitiesRouteTest {
 
     @Test
     fun `get activities endpoint should return 404 when user ID is empty`() =
-        getActivitiesRouteTestApplication {
+        configureTestApplication {
             val userId = ""
             val response = testHttpClient().get("/v1/activities/$userId/")
 
@@ -54,7 +56,7 @@ class GetActivitiesRouteTest {
 
     @Test
     fun `get activities endpoint should return 404 when user ID is whitespace`() =
-        getActivitiesRouteTestApplication {
+        configureTestApplication {
             val userId = " "
             val response = testHttpClient().get("/v1/activities/$userId/")
 
@@ -63,7 +65,7 @@ class GetActivitiesRouteTest {
 
     @Test
     fun `get activities endpoint should return 400 when user ID is invalid`() =
-        getActivitiesRouteTestApplication {
+        configureTestApplication {
             val userId = "invalidUserId"
             val response = testHttpClient().get("/v1/activities/$userId")
 

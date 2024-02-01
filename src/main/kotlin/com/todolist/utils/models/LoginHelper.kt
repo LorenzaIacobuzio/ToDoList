@@ -8,9 +8,7 @@ import org.jetbrains.exposed.sql.selectAll
 import org.mindrot.jbcrypt.BCrypt
 
 fun validateLoginRequest(request: Login): RequestValidationResult = when {
-    request.username.isEmpty() -> RequestValidationResult.Invalid("Username must not be empty")
     request.username.isBlank() -> RequestValidationResult.Invalid("Username must not be blank")
-    request.password.isEmpty() -> RequestValidationResult.Invalid("Password must not be empty")
     request.password.isBlank() -> RequestValidationResult.Invalid("Password must not be blank")
     else -> RequestValidationResult.Valid
 }

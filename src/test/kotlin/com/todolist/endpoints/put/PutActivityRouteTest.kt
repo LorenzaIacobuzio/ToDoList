@@ -3,11 +3,9 @@ package com.todolist.endpoints.put
 import com.todolist.models.Activity
 import com.todolist.models.Frequency
 import com.todolist.models.Priority
-import com.todolist.plugins.configureRouting
-import com.todolist.utils.database.configureDatabase
+import com.todolist.utils.configureTestApplication
 import com.todolist.utils.models.getActivities
 import com.todolist.utils.testHttpClient
-import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.request.post
 import io.ktor.client.request.put
 import io.ktor.client.request.setBody
@@ -15,10 +13,6 @@ import io.ktor.client.statement.bodyAsText
 import io.ktor.http.ContentType
 import io.ktor.http.HttpStatusCode
 import io.ktor.http.contentType
-import io.ktor.serialization.kotlinx.json.json
-import io.ktor.server.config.ApplicationConfig
-import io.ktor.server.testing.ApplicationTestBuilder
-import io.ktor.server.testing.testApplication
 import java.time.Instant
 import java.util.UUID
 import kotlin.test.Test
@@ -33,28 +27,9 @@ class PutActivityRouteTest {
         frequency = Frequency.ONCE
     )
 
-    private fun putActivityRouteTestApplication(
-        block: suspend ApplicationTestBuilder.() -> Unit
-    ) = testApplication {
-        createClient {
-            install(ContentNegotiation) {
-                json()
-            }
-        }
-        environment {
-            config = ApplicationConfig("application-test.conf")
-        }
-        application {
-            configureDatabase(environment.config, true)
-            configureRouting()
-        }
-
-        block()
-    }
-
     @Test
     fun `put activity endpoint should return 200 when activity is successfully updated in db`() =
-        putActivityRouteTestApplication {
+        configureTestApplication {
             val response = testHttpClient().post("/v1/activity") {
                 contentType(ContentType.Application.Json)
                 setBody(mockActivity)
@@ -78,7 +53,7 @@ class PutActivityRouteTest {
 
     @Test
     fun `put activity endpoint should return 200 when activity with nullables is successfully updated in db`() =
-        putActivityRouteTestApplication {
+        configureTestApplication {
             val mockActivityWithNullables = mockActivity.copy(
                 userId = UUID.fromString("e58ed763-928c-4155-bee9-fdbaaadc15f4"),
                 group = "Personal",
@@ -110,7 +85,7 @@ class PutActivityRouteTest {
 
     @Test(expected = IllegalArgumentException::class)
     fun `put activity endpoint should return 400 when userId is empty`() =
-        putActivityRouteTestApplication {
+        configureTestApplication {
             val mockInvalidActivity = mockActivity.copy(userId = UUID.fromString(""))
             val response = testHttpClient().put("/v1/activity") {
                 contentType(ContentType.Application.Json)
@@ -123,7 +98,7 @@ class PutActivityRouteTest {
 
     @Test(expected = IllegalArgumentException::class)
     fun `put activity endpoint should return 400 when userId is whitespace`() =
-        putActivityRouteTestApplication {
+        configureTestApplication {
             val mockInvalidActivity = mockActivity.copy(userId = UUID.fromString(" "))
             val response = testHttpClient().put("/v1/activity") {
                 contentType(ContentType.Application.Json)
@@ -136,7 +111,7 @@ class PutActivityRouteTest {
 
     @Test(expected = IllegalArgumentException::class)
     fun `put activity endpoint should return 400 when userId is not UUID`() =
-        putActivityRouteTestApplication {
+        configureTestApplication {
             val mockInvalidActivity = mockActivity.copy(userId = UUID.fromString("e58ed763-928c-bee9-fdbaaadc15f3"))
             val response = testHttpClient().put("/v1/activity") {
                 contentType(ContentType.Application.Json)
@@ -149,7 +124,7 @@ class PutActivityRouteTest {
 
     @Test(expected = IllegalArgumentException::class)
     fun `put activity endpoint should return 400 when id is empty`() =
-        putActivityRouteTestApplication {
+        configureTestApplication {
             val mockInvalidActivity = mockActivity.copy(id = UUID.fromString(""))
             val response = testHttpClient().put("/v1/activity") {
                 contentType(ContentType.Application.Json)
@@ -162,7 +137,7 @@ class PutActivityRouteTest {
 
     @Test(expected = IllegalArgumentException::class)
     fun `put activity endpoint should return 400 when id is whitespace`() =
-        putActivityRouteTestApplication {
+        configureTestApplication {
             val mockInvalidActivity = mockActivity.copy(id = UUID.fromString(" "))
             val response = testHttpClient().put("/v1/activity") {
                 contentType(ContentType.Application.Json)
@@ -175,7 +150,7 @@ class PutActivityRouteTest {
 
     @Test(expected = IllegalArgumentException::class)
     fun `put activity endpoint should return 400 when id is not UUID`() =
-        putActivityRouteTestApplication {
+        configureTestApplication {
             val mockInvalidActivity = mockActivity.copy(id = UUID.fromString("e58ed763-928c-bee9-fdbaaadc15f3"))
             val response = testHttpClient().put("/v1/activity") {
                 contentType(ContentType.Application.Json)
@@ -188,7 +163,7 @@ class PutActivityRouteTest {
 
     @Test
     fun `put activity endpoint should return 400 when title is empty`() =
-        putActivityRouteTestApplication {
+        configureTestApplication {
             val mockInvalidActivity = mockActivity.copy(title = "")
             val response = testHttpClient().put("/v1/activity") {
                 contentType(ContentType.Application.Json)
@@ -201,7 +176,7 @@ class PutActivityRouteTest {
 
     @Test
     fun `put activity endpoint should return 400 when title is whitespace`() =
-        putActivityRouteTestApplication {
+        configureTestApplication {
             val mockInvalidActivity = mockActivity.copy(title = " ")
             val response = testHttpClient().put("/v1/activity") {
                 contentType(ContentType.Application.Json)
