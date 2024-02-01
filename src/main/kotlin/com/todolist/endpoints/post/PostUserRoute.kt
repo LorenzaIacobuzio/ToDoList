@@ -2,7 +2,8 @@ package com.todolist.endpoints.post
 
 import com.todolist.models.User
 import com.todolist.utils.models.addNewUser
-import com.todolist.utils.models.hashUserCredentials
+import com.todolist.utils.models.hashUserPassword
+import com.todolist.utils.models.hashUserUsername
 import com.todolist.utils.models.isUserAlreadyPresent
 import com.todolist.utils.models.validateUserRequest
 import com.todolist.utils.validation.RequestValidationResult
@@ -25,7 +26,8 @@ fun Route.postUserRoute() {
 
             RequestValidationResult.Valid -> {
                 if (!isUserAlreadyPresent(user)) {
-                    addNewUser(hashUserCredentials(user))
+                    val hashedUser = User(user.userId, hashUserUsername(user.username), hashUserPassword(user.password))
+                    addNewUser(hashedUser)
                     call.respond(status = HttpStatusCode.Created, message = "User created")
                 } else {
                     call.respond(status = HttpStatusCode.Conflict, message = "User already exists")

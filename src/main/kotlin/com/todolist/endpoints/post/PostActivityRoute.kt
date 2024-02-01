@@ -14,7 +14,6 @@ import io.ktor.server.routing.post
 fun Route.postActivityRoute() {
     post("/activity") {
         val request = call.receive<Activity>()
-
         when (val result = validateActivityRequest(request)) {
             is RequestValidationResult.Invalid -> call.respond(
                 status = HttpStatusCode.BadRequest,

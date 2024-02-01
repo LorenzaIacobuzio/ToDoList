@@ -55,10 +55,10 @@ fun validateUserRequest(request: User): RequestValidationResult = when {
 suspend fun getUsers(): List<User> = DatabaseFactory.databaseQuery {
     Users.selectAll().map { resultRowToUser(it) }
 }
+fun hashUserPassword(password: String): String {
+    return BCrypt.hashpw(password, BCrypt.gensalt())
+}
 
-fun hashUserCredentials(user: User): User {
-    val hashedUsername = BCrypt.hashpw(user.username, BCrypt.gensalt())
-    val hashedPassword = BCrypt.hashpw(user.password, BCrypt.gensalt())
-
-    return User(user.userId, hashedUsername, hashedPassword)
+fun hashUserUsername(username: String): String {
+    return BCrypt.hashpw(username, BCrypt.gensalt())
 }
