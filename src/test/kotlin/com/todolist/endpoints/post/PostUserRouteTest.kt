@@ -1,21 +1,15 @@
 package com.todolist.endpoints.post
 
 import com.todolist.models.User
-import com.todolist.plugins.configureRouting
-import com.todolist.utils.database.configureDatabase
+import com.todolist.utils.configureTestApplication
 import com.todolist.utils.models.getUsers
 import com.todolist.utils.testHttpClient
-import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.request.post
 import io.ktor.client.request.setBody
 import io.ktor.client.statement.bodyAsText
 import io.ktor.http.ContentType
 import io.ktor.http.HttpStatusCode
 import io.ktor.http.contentType
-import io.ktor.serialization.kotlinx.json.json
-import io.ktor.server.config.ApplicationConfig
-import io.ktor.server.testing.ApplicationTestBuilder
-import io.ktor.server.testing.testApplication
 import java.util.UUID
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -27,28 +21,9 @@ class PostUserRouteTest {
         password = "lorenza"
     )
 
-    private fun postUserRouteTestApplication(
-        block: suspend ApplicationTestBuilder.() -> Unit
-    ) = testApplication {
-        createClient {
-            install(ContentNegotiation) {
-                json()
-            }
-        }
-        environment {
-            config = ApplicationConfig("application-test.conf")
-        }
-        application {
-            configureDatabase(environment.config, true)
-            configureRouting()
-        }
-
-        block()
-    }
-
     @Test
     fun `post user endpoint should return 200 when new user is successfully inserted in db`() =
-        postUserRouteTestApplication {
+        configureTestApplication {
             val response = testHttpClient().post("/v1/user") {
                 contentType(ContentType.Application.Json)
                 setBody(mockUser)
@@ -57,12 +32,12 @@ class PostUserRouteTest {
 
             assertEquals(HttpStatusCode.Created, response.status)
             assertEquals("User created", response.bodyAsText())
-            assertEquals(1, users.size)
+            assertEquals(2, users.size)
         }
 
     @Test
     fun `post user endpoint should return 409 when user with same user ID already exists in db`() =
-        postUserRouteTestApplication {
+        configureTestApplication {
             val response = testHttpClient().post("/v1/user") {
                 contentType(ContentType.Application.Json)
                 setBody(mockUser)
@@ -70,7 +45,7 @@ class PostUserRouteTest {
             val users: List<User> = getUsers()
 
             assertEquals(HttpStatusCode.Created, response.status)
-            assertEquals(1, users.size)
+            assertEquals(2, users.size)
 
             val duplicateUser = mockUser.copy(username = "new username")
             val newResponse = testHttpClient().post("/v1/user") {
@@ -84,7 +59,7 @@ class PostUserRouteTest {
 
     @Test
     fun `post user endpoint should return 409 when user with same username already exists in db`() =
-        postUserRouteTestApplication {
+        configureTestApplication {
             val response = testHttpClient().post("/v1/user") {
                 contentType(ContentType.Application.Json)
                 setBody(mockUser)
@@ -92,7 +67,7 @@ class PostUserRouteTest {
             val users: List<User> = getUsers()
 
             assertEquals(HttpStatusCode.Created, response.status)
-            assertEquals(1, users.size)
+            assertEquals(2, users.size)
 
             val duplicateUser = mockUser.copy(userId = UUID.fromString("e58ed763-928c-0011-bee9-fdbaaadc15f3"))
             val newResponse = testHttpClient().post("/v1/user") {
@@ -106,7 +81,7 @@ class PostUserRouteTest {
 
     @Test(expected = IllegalArgumentException::class)
     fun `post user endpoint should return 400 when userId is empty`() =
-        postUserRouteTestApplication {
+        configureTestApplication {
             val mockInvalidUser = mockUser.copy(userId = UUID.fromString(""))
             val response = testHttpClient().post("/v1/user") {
                 contentType(ContentType.Application.Json)
@@ -119,7 +94,7 @@ class PostUserRouteTest {
 
     @Test(expected = IllegalArgumentException::class)
     fun `post user endpoint should return 400 when userId is whitespace`() =
-        postUserRouteTestApplication {
+        configureTestApplication {
             val mockInvalidUser = mockUser.copy(userId = UUID.fromString(" "))
             val response = testHttpClient().post("/v1/user") {
                 contentType(ContentType.Application.Json)
@@ -132,7 +107,7 @@ class PostUserRouteTest {
 
     @Test(expected = IllegalArgumentException::class)
     fun `post user endpoint should return 400 when userId is not UUID`() =
-        postUserRouteTestApplication {
+        configureTestApplication {
             val mockInvalidUser = mockUser.copy(userId = UUID.fromString("e58ed763-928c-bee9-fdbaaadc15f3"))
             val response = testHttpClient().post("/v1/user") {
                 contentType(ContentType.Application.Json)
@@ -143,8 +118,9 @@ class PostUserRouteTest {
             assertEquals("Invalid UUID format", response.bodyAsText())
         }
 
+    @Test
     fun `post user endpoint should return 400 when username is empty`() =
-        postUserRouteTestApplication {
+        configureTestApplication {
             val mockInvalidUser = mockUser.copy(username = "")
             val response = testHttpClient().post("/v1/user") {
                 contentType(ContentType.Application.Json)
@@ -155,8 +131,9 @@ class PostUserRouteTest {
             assertEquals("Username must not be empty", response.bodyAsText())
         }
 
+    @Test
     fun `post user endpoint should return 400 when username is whitespace`() =
-        postUserRouteTestApplication {
+        configureTestApplication {
             val mockInvalidUser = mockUser.copy(username = " ")
             val response = testHttpClient().post("/v1/user") {
                 contentType(ContentType.Application.Json)
@@ -167,8 +144,9 @@ class PostUserRouteTest {
             assertEquals("Username must not be blank", response.bodyAsText())
         }
 
+    @Test
     fun `post user endpoint should return 400 when password is empty`() =
-        postUserRouteTestApplication {
+        configureTestApplication {
             val mockInvalidUser = mockUser.copy(password = "")
             val response = testHttpClient().post("/v1/user") {
                 contentType(ContentType.Application.Json)
@@ -179,8 +157,9 @@ class PostUserRouteTest {
             assertEquals("Password must not be empty", response.bodyAsText())
         }
 
+    @Test
     fun `post user endpoint should return 400 when password is whitespace`() =
-        postUserRouteTestApplication {
+        configureTestApplication {
             val mockInvalidUser = mockUser.copy(password = " ")
             val response = testHttpClient().post("/v1/user") {
                 contentType(ContentType.Application.Json)

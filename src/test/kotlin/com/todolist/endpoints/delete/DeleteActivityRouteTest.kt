@@ -2,11 +2,9 @@ package com.todolist.endpoints.delete
 
 import com.todolist.models.Activity
 import com.todolist.models.Frequency
-import com.todolist.plugins.configureRouting
-import com.todolist.utils.database.configureDatabase
+import com.todolist.utils.configureTestApplication
 import com.todolist.utils.models.getActivities
 import com.todolist.utils.testHttpClient
-import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.request.delete
 import io.ktor.client.request.post
 import io.ktor.client.request.setBody
@@ -14,10 +12,6 @@ import io.ktor.client.statement.bodyAsText
 import io.ktor.http.ContentType
 import io.ktor.http.HttpStatusCode
 import io.ktor.http.contentType
-import io.ktor.serialization.kotlinx.json.json
-import io.ktor.server.config.ApplicationConfig
-import io.ktor.server.testing.ApplicationTestBuilder
-import io.ktor.server.testing.testApplication
 import java.time.Instant
 import java.util.UUID
 import kotlin.test.Test
@@ -32,28 +26,9 @@ class DeleteActivityRouteTest {
         frequency = Frequency.ONCE
     )
 
-    private fun deleteActivityRouteTestApplication(
-        block: suspend ApplicationTestBuilder.() -> Unit
-    ) = testApplication {
-        createClient {
-            install(ContentNegotiation) {
-                json()
-            }
-        }
-        environment {
-            config = ApplicationConfig("application-test.conf")
-        }
-        application {
-            configureDatabase(environment.config, true)
-            configureRouting()
-        }
-
-        block()
-    }
-
     @Test
     fun `delete activity endpoint should return 200 when activity is successfully deleted in db`() =
-        deleteActivityRouteTestApplication {
+        configureTestApplication {
             val response = testHttpClient().post("/v1/activity") {
                 contentType(ContentType.Application.Json)
                 setBody(mockActivity)
@@ -75,7 +50,7 @@ class DeleteActivityRouteTest {
 
     @Test(expected = IllegalArgumentException::class)
     fun `delete activity endpoint should return 400 when id is empty`() =
-        deleteActivityRouteTestApplication {
+        configureTestApplication {
             val mockInvalidActivity = mockActivity.copy(id = UUID.fromString(""))
             val response = testHttpClient().delete("/v1/activity") {
                 contentType(ContentType.Application.Json)
@@ -88,7 +63,7 @@ class DeleteActivityRouteTest {
 
     @Test(expected = IllegalArgumentException::class)
     fun `delete activity endpoint should return 400 when id is whitespace`() =
-        deleteActivityRouteTestApplication {
+        configureTestApplication {
             val mockInvalidActivity = mockActivity.copy(id = UUID.fromString(" "))
             val response = testHttpClient().delete("/v1/activity") {
                 contentType(ContentType.Application.Json)
@@ -101,7 +76,7 @@ class DeleteActivityRouteTest {
 
     @Test(expected = IllegalArgumentException::class)
     fun `delete activity endpoint should return 400 when id is not UUID`() =
-        deleteActivityRouteTestApplication {
+        configureTestApplication {
             val mockInvalidActivity = mockActivity.copy(id = UUID.fromString("e58ed763-928c-bee9-fdbaaadc15f3"))
             val response = testHttpClient().delete("/v1/activity") {
                 contentType(ContentType.Application.Json)

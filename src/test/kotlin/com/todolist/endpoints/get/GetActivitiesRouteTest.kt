@@ -2,21 +2,15 @@ package com.todolist.endpoints.get
 
 import com.todolist.models.Activity
 import com.todolist.models.Frequency
-import com.todolist.plugins.configureRouting
-import com.todolist.utils.database.configureDatabase
+import com.todolist.utils.configureTestApplication
 import com.todolist.utils.testHttpClient
 import io.ktor.client.call.body
-import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.request.get
 import io.ktor.client.request.post
 import io.ktor.client.request.setBody
 import io.ktor.http.ContentType
 import io.ktor.http.HttpStatusCode
 import io.ktor.http.contentType
-import io.ktor.serialization.kotlinx.json.json
-import io.ktor.server.config.ApplicationConfig
-import io.ktor.server.testing.ApplicationTestBuilder
-import io.ktor.server.testing.testApplication
 import java.time.Instant
 import java.util.UUID
 import kotlin.test.Test
@@ -31,30 +25,12 @@ class GetActivitiesRouteTest {
         frequency = Frequency.ONCE
     )
 
-    private fun getActivitiesRouteTestApplication(
-        block: suspend ApplicationTestBuilder.() -> Unit
-    ) = testApplication {
-        createClient {
-            install(ContentNegotiation) {
-                json()
-            }
-        }
-        environment {
-            config = ApplicationConfig("application-test.conf")
-        }
-        application {
-            configureDatabase(environment.config, true)
-            configureRouting()
-        }
-
-        block()
-    }
-
     @Test
     fun `get activities endpoint should return 200 and list of activities by user when user ID is valid`() =
-        getActivitiesRouteTestApplication {
+        configureTestApplication {
             repeat(3) {
                 testHttpClient().post("/v1/activity") {
+                    // headers.append("Authorization", "Bearer ${authenticationToken}")
                     contentType(ContentType.Application.Json)
                     setBody(mockActivity)
                 }
@@ -71,7 +47,7 @@ class GetActivitiesRouteTest {
 
     @Test
     fun `get activities endpoint should return 404 when user ID is empty`() =
-        getActivitiesRouteTestApplication {
+        configureTestApplication {
             val userId = ""
             val response = testHttpClient().get("/v1/activities/$userId/")
 
@@ -80,7 +56,7 @@ class GetActivitiesRouteTest {
 
     @Test
     fun `get activities endpoint should return 404 when user ID is whitespace`() =
-        getActivitiesRouteTestApplication {
+        configureTestApplication {
             val userId = " "
             val response = testHttpClient().get("/v1/activities/$userId/")
 
@@ -89,7 +65,7 @@ class GetActivitiesRouteTest {
 
     @Test
     fun `get activities endpoint should return 400 when user ID is invalid`() =
-        getActivitiesRouteTestApplication {
+        configureTestApplication {
             val userId = "invalidUserId"
             val response = testHttpClient().get("/v1/activities/$userId")
 
