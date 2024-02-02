@@ -46,7 +46,7 @@ class PostActivityRouteTest {
         configureTestApplication {
             val mockActivityWithNullables = mockActivity.copy(
                 userId = UUID.fromString("e58ed763-928c-4155-bee9-fdbaaadc15f4"),
-                group = "Personal",
+                activityGroup = "Personal",
                 priority = Priority.LOW,
                 description = "Description",
                 rescheduledToDate = Instant.parse("2024-01-22T15:39:03.800453Z"),

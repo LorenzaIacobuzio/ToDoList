@@ -51,6 +51,7 @@ dependencies {
     implementation("io.ktor:ktor-server-auth-jwt:$ktor_version")
     implementation("io.ktor:ktor-client-auth:$ktor_version")
     implementation("io.ktor:ktor-server-sessions:$ktor_version")
+    implementation("org.flywaydb:flyway-core:8.0.1")
     detektPlugins("io.gitlab.arturbosch.detekt:detekt-formatting:1.23.1")
     testImplementation("io.ktor:ktor-client-content-negotiation:2.1.1")
     testImplementation("io.ktor:ktor-server-tests-jvm")
