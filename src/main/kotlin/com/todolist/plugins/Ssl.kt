@@ -10,7 +10,7 @@ fun Application.configureSsl() {
     val keyStore = buildKeyStore {
         certificate("sampleAlias") {
             password = "foobar"
-            domains = listOf("127.0.0.1", "0.0.0.0", "localhost")
+            domains = listOf("127.0.0.1", "0.0.0.0", "localhost", "postgres")
         }
     }
     keyStore.saveToFile(keyStoreFile, "123456")

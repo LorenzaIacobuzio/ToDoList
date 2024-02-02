@@ -1,0 +1,31 @@
+version: '3.9'
+
+services:
+  postgres:
+    image: postgres:12-alpine
+    restart: always
+    healthcheck:
+      test:  ["CMD-SHELL", "pg_isready", "-d", "$$POSTGRES_DB"]
+      interval: 30s
+      timeout: 60s
+      retries: 5
+      start_period: 80s
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_DB=ToDoListDB
+      - PGUSER=postgres
+
+  app:
+    build: .
+    depends_on: [postgres]
+    ports:
+      - 8443:8443
+      - 8080:8080
+    environment:
+      DB_NAME: ToDoListDB
+      DB_USERNAME: postgres
+      DB_PASSWORD: postgres
+      JDBC_URL: jdbc:postgresql://postgres:5432
