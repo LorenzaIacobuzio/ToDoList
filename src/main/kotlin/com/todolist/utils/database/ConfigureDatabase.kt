@@ -6,7 +6,7 @@ fun configureDatabase(config: ApplicationConfig, isTestDatabase: Boolean) {
     val database = DatabaseFactory.init(config)
 
     if (!isTestDatabase) {
-        DatabaseFactory.createTables(database)
+        DatabaseFactory.applyMigrations(config)
     } else {
         DatabaseFactory.dropTables(database)
         DatabaseFactory.createTables(database)

@@ -13,7 +13,7 @@ object Activities : Table("Activities") {
     val id: Column<UUID> = uuid("id")
     val userId: Column<UUID> = uuid("userId")
     val title: Column<String> = varchar("title", 255)
-    val group: Column<String?> = varchar("group", 255).nullable()
+    val activityGroup: Column<String?> = varchar("group", 255).nullable()
     val dueDate: Column<Instant> = timestamp("dueDate")
     val priority: Column<Priority?> = enumerationByName<Priority>("priority", 255).nullable()
     val description: Column<String?> = varchar("description", 255).nullable()

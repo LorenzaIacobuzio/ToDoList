@@ -6,6 +6,7 @@ import com.zaxxer.hikari.HikariConfig
 import com.zaxxer.hikari.HikariDataSource
 import io.ktor.server.config.ApplicationConfig
 import kotlinx.coroutines.Dispatchers
+import org.flywaydb.core.Flyway
 import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.SchemaUtils
 import org.jetbrains.exposed.sql.transactions.experimental.newSuspendedTransaction
@@ -28,6 +29,17 @@ object DatabaseFactory {
         )
 
         return Database.connect(connectionPool)
+    }
+
+    fun applyMigrations(config: ApplicationConfig) {
+        val jdbcURL = config.property("ktor.database.jdbcURL").getString()
+        val defaultDatabase = config.property("ktor.database.database").getString()
+        val databaseFullUrl = "$jdbcURL/$defaultDatabase"
+        val username = config.property("ktor.database.user").getString()
+        val password = config.property("ktor.database.password").getString()
+        val flyway =
+            Flyway.configure().baselineOnMigrate(true).dataSource(databaseFullUrl, username, password).load()
+        flyway.migrate()
     }
 
     private fun createHikariDataSource(

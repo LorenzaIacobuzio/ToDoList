@@ -154,7 +154,7 @@ components:
         title:
           description: Activity title
           type: String
-        group:
+        activityGroup:
           description: Group the activity belongs to
           type: String
         dueDate:

@@ -14,7 +14,7 @@ data class Activity(
     val id: UUID,
     val userId: UUID,
     val title: String,
-    val group: String? = null,
+    val activityGroup: String? = null,
     val dueDate: Instant,
     val priority: Priority? = Priority.MEDIUM,
     val description: String? = null,
