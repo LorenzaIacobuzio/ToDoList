@@ -17,8 +17,13 @@ suspend fun getActivities(userId: UUID): List<Activity> = DatabaseFactory.databa
     Activities.select { Activities.userId eq userId }.map { resultRowToActivity(it) }
 }
 
-suspend fun getActivity(id: UUID): Activity = DatabaseFactory.databaseQuery {
-    Activities.select { Activities.id eq id }.map { resultRowToActivity(it) }.first()
+suspend fun getActivity(id: UUID): Activity? = DatabaseFactory.databaseQuery {
+    val activities = Activities.select { Activities.id eq id }.map { resultRowToActivity(it) }
+    if (activities.isNotEmpty()) {
+        return@databaseQuery activities.first()
+    } else {
+        return@databaseQuery null
+    }
 }
 
 suspend fun deleteActivity(id: UUID) = DatabaseFactory.databaseQuery {
