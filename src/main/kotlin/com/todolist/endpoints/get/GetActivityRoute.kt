@@ -21,7 +21,11 @@ fun Route.getActivityRoute() {
 
             is RequestValidationResult.Valid -> {
                 val activity = getActivity(UUID.fromString(id))
-                call.respond(status = HttpStatusCode.OK, activity)
+                if (activity != null) {
+                    call.respond(status = HttpStatusCode.OK, activity)
+                } else {
+                    call.respond(status = HttpStatusCode.NotFound, message = "Activity not found")
+                }
             }
         }
     }

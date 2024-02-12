@@ -46,6 +46,17 @@ class GetActivitiesRouteTest {
         }
 
     @Test
+    fun `get activities endpoint should return 200 and empty list when user ID is not present in database`() =
+        configureTestApplication {
+            val userId = "e58ed763-928c-7777-bee9-fdbaaadc15f2"
+            val response = testHttpClient().get("/v1/activities/$userId")
+            val activities: List<Activity> = response.body<List<Activity>>()
+
+            assertEquals(HttpStatusCode.OK, response.status)
+            assertEquals(0, activities.size)
+        }
+
+    @Test
     fun `get activities endpoint should return 404 when user ID is empty`() =
         configureTestApplication {
             val userId = ""

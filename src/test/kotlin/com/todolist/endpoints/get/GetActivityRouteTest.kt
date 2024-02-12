@@ -42,6 +42,15 @@ class GetActivityRouteTest {
         }
 
     @Test
+    fun `get activity endpoint should return 404 when activity is not present in database`() =
+        configureTestApplication {
+            val id = "e58ed763-928c-1010-bee9-fdbaaadc15f3"
+            val response = testHttpClient().get("/v1/activity/$id")
+
+            assertEquals(HttpStatusCode.NotFound, response.status)
+        }
+
+    @Test
     fun `get activity endpoint should return 404 when ID is empty`() =
         configureTestApplication {
             val id = ""

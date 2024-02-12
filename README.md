@@ -37,6 +37,7 @@ To build and run the app with gradle, do `./gradlew run assemble` in the root di
 
 ## Database
 
+From command line, type `sudo systemctl restart postgresql.service` in case the service is not already up and running.
 Switch to system admin from command line with `sudo -i -u postgres`.
 This user can create new databases, users, etc.
 
