@@ -1,6 +1,8 @@
 # TO-DO LIST APP
 
 A simple backend system for a to-do list app, with a RESTful API and a database.
+This is a quick and dirty proof of concept, to prove to me the concept that I am able to do this from scratch in a short amount of time.
+There is an infinite list of improvements that this can undergo, and an even more infinite (if possible) list of way-too-dirty things. Oh well.
 
 ## Tech stack
 
